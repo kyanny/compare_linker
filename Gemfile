@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 
-gem "octokit", "2.6.3"
+gem "octokit"
 gem "httpclient"
 gem "unified_diff"
