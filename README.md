@@ -7,4 +7,4 @@ Guides
 ------
 
 * [Heroku Setup Guide](guides/heroku_setup_guide.md)
-* Jenkins Setup Guide
+* [Jenkins Setup Guide](guides/jenkins_setup_guide.md)
