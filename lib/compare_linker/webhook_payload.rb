@@ -7,6 +7,10 @@ class CompareLinker
       @json = JSON.parse(@payload)
     end
 
+    def action
+      @json["action"]
+    end
+
     def repo_full_name
       @json["repository"]["full_name"]
     end
