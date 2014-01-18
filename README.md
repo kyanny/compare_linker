@@ -1,11 +1,10 @@
 Compare Linkder
 ===============
 
-Create GitHub's compare URL by parsing diff of Gemfile.lock from Pull Request.
+Create GitHub's compare URL by parsing diff of Gemfile.lock from pull request.
 
-Usage
------
+Guides
+------
 
-```
-$ OCTOKIT_ACCESS_TOKEN=[your github token] ruby cli.rb [repo_full_name] [pr_number]
-```
+* [Heroku Setup Guide](guides/heroku_setup_guide.md)
+* Jenkins Setup Guide
