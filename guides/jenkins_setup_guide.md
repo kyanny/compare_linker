@@ -72,7 +72,10 @@ $ curl -H 'Authorization: token [your_github_access_token]' \
 
 Or by http://www.hurl.it/:
 
-![screen shot 2014-01-19 at 12 33 29 am](https://f.cloud.github.com/assets/10515/1947448/77f1b53e-8056-11e3-8eba-edb2fec5bd8e.png)
+![screen shot 2014-01-19 at 1 25 12 am](https://f.cloud.github.com/assets/10515/1947590/6da9392e-805d-11e3-8304-ab8648c7a7e0.png)
+
+If your jenkins requires authentication, you need basic auth to access jenkins.
+You can embed basic auth credential to URL like "http://user@pass:host" style.
 
 8. Open new pull request
 ------------------------
