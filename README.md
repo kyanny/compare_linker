@@ -1,5 +1,5 @@
-Compare Linkder
-===============
+Compare Linker
+==============
 
 Create GitHub's compare URL by parsing diff of `Gemfile.lock` from pull request.
 
