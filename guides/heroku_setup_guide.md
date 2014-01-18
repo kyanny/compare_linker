@@ -39,6 +39,10 @@ If you don't have GitHub access token, you can get it from https://github.com/se
 5. Add GitHub Webhook to your repository
 ----------------------------------------
 
+CompareLinker rack app listens GitHub's pull request webhook.
+Webhook URL is like `http://kyanny-compare-linker.herokuapp.com/webhook`.
+Don't forget `/webhook` path!
+
 You can add webhook to your repository by `curl(1)`:
 
 ```
