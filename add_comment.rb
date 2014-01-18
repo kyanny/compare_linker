@@ -12,4 +12,6 @@ if repo_full_name.nil? || pr_number.nil?
   exit(1)
 end
 
-puts CompareLinker.new(repo_full_name, pr_number).make_compare_link
+compare_linker = CompareLinker.new(repo_full_name, pr_number)
+compare_links = compare_linker.make_compare_link.join("\n")
+puts compare_linker.add_comment(repo_full_name, pr_number, compare_links)

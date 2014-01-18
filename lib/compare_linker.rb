@@ -2,6 +2,7 @@ require "json"
 require "octokit"
 require "httpclient"
 require "unified_diff"
+require_relative "compare_linker/webhook_payload"
 
 class CompareLinker
   attr_reader :repo_full_name, :pr_number, :octokit
@@ -50,5 +51,14 @@ class CompareLinker
         "* #{gem}: https://github.com/#{owner}/#{gem}/compare/#{old_ver}...#{new_ver}"
       end
     }.compact
+  end
+
+  def add_comment(repo_full_name, pr_number, compare_links)
+    res = octokit.add_comment(
+      repo_full_name,
+      pr_number,
+      compare_links
+    )
+    "https://github.com/#{repo_full_name}/pull/#{pr_number}#issuecomment-#{res.id}"
   end
 end
