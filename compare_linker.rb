@@ -16,7 +16,7 @@ class CompareLinker
     UnifiedDiff.parse(
       octokit.pull_request_files(repo_full_name, pr_number).find { |resource| resource.filename == "Gemfile.lock" }.patch
     ).chunks.map { |chunk, i|
-      old = chunk.raw_lines.find { |line| line.match(/^-/) }
+      old = chunk.raw_lines.find { |line| line.match(/^-/) } # TODO: `find` ignore dependency updates
       new = chunk.raw_lines.find { |line| line.match(/^\+/) }
       _, old_gem, old_ver = old.match(/^-\s+(\S+) \((.*?)\)/).to_a
       _, new_gem, new_ver = new.match(/^\+\s+(\S+) \((.*?)\)/).to_a
@@ -26,6 +26,7 @@ class CompareLinker
         _, old_ver = old.match(/^-\s+revision:\s+(\S+)/).to_a
         _, new_ver = new.match(/^\+\s+revision:\s+(\S+)/).to_a
       end
+      next if (old_ver.nil? || new_ver.nil?)
       if owner.nil?
         gem_info = JSON.parse(
           HTTPClient.get("https://rubygems.org/api/v1/gems/#{gem}.json").body
@@ -48,6 +49,6 @@ class CompareLinker
       else
         "* #{gem}: https://github.com/#{owner}/#{gem}/compare/#{old_ver}...#{new_ver}"
       end
-    }
+    }.compact
   end
 end
