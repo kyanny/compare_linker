@@ -1,0 +1,25 @@
+--- a/Gemfile.lock
++++ b/Gemfile.lock
+@@ -1,8 +1,8 @@
+ GIT
+   remote: git://github.com/sanemat/tachikoma.git
+-  revision: 3cbbfbcf4bbf510c402615b9a179a210aac73eb9
++  revision: bf12bb1017ef68f245373df20ce708bebb90bdba
+   specs:
+-    tachikoma (4.0.3.beta)
++    tachikoma (4.0.4.beta)
+       json
+       octokit (>= 2, < 3)
+       rake
+@@ -19,9 +19,9 @@ GEM
+     multipart-post (1.2.0)
+     octokit (2.7.0)
+       sawyer (~> 0.5.2)
+-    oj (2.5.1)
++    oj (2.5.3)
+     rake (10.1.1)
+-    safe_yaml (0.9.7)
++    safe_yaml (1.0.0)
+     sawyer (0.5.2)
+       addressable (~> 2.3.5)
+       faraday (~> 0.8, < 0.10)

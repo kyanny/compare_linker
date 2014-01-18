@@ -1,0 +1,20 @@
+--- a/Gemfile.lock
++++ b/Gemfile.lock
+@@ -6,8 +6,8 @@ GEM
+       multipart-post (>= 1.2, < 3)
+     httpclient (2.3.4.1)
+     multipart-post (2.0.0)
+-    octokit (2.6.3)
+-      sawyer (~> 0.5.1)
++    octokit (2.7.0)
++      sawyer (~> 0.5.2)
+     sawyer (0.5.2)
+       addressable (~> 2.3.5)
+       faraday (~> 0.8, < 0.10)
+@@ -18,5 +18,5 @@ PLATFORMS
+ 
+ DEPENDENCIES
+   httpclient
+-  octokit (= 2.6.3)
++  octokit
+   unified_diff

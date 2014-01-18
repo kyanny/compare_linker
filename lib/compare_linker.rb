@@ -16,17 +16,9 @@ class CompareLinker
     UnifiedDiff.parse(
       octokit.pull_request_files(repo_full_name, pr_number).find { |resource| resource.filename == "Gemfile.lock" }.patch
     ).chunks.map { |chunk, i|
-      old = chunk.raw_lines.find { |line| line.match(/^-/) } # TODO: `find` ignore dependency updates
-      new = chunk.raw_lines.find { |line| line.match(/^\+/) }
-      _, old_gem, old_ver = old.match(/^-\s+(\S+) \((.*?)\)/).to_a
-      _, new_gem, new_ver = new.match(/^\+\s+(\S+) \((.*?)\)/).to_a
-      gem = [old_gem, new_gem].uniq.first
-      if gem.nil?
-        _, owner, gem = chunk.raw_lines.find { |line| line.match(/github\.com/) }.match(/github\.com\/(.*)\/(.*)\.git/).to_a
-        _, old_ver = old.match(/^-\s+revision:\s+(\S+)/).to_a
-        _, new_ver = new.match(/^\+\s+revision:\s+(\S+)/).to_a
-      end
+      gem, owner, old_ver, new_ver = parse(chunk)
       next if (old_ver.nil? || new_ver.nil?)
+
       if owner.nil?
         gem_info = JSON.parse(
           HTTPClient.get("https://rubygems.org/api/v1/gems/#{gem}.json").body
@@ -50,6 +42,27 @@ class CompareLinker
         "* #{gem}: https://github.com/#{owner}/#{gem}/compare/#{old_ver}...#{new_ver}"
       end
     }.compact
+  end
+
+  def parse(chunk)
+    old = chunk.raw_lines.find { |line| line.match(/^-/) } # TODO: `find` ignore dependency updates
+    new = chunk.raw_lines.find { |line| line.match(/^\+/) }
+    _, old_gem, old_ver = old.match(/^-\s+(\S+) \((.*?)\)/).to_a
+    _, new_gem, new_ver = new.match(/^\+\s+(\S+) \((.*?)\)/).to_a
+
+    gem = [old_gem, new_gem].uniq.first
+
+    if gem.nil?
+      _, owner, gem = chunk.raw_lines.find { |line| line.match(/github\.com/) }.match(/github\.com\/(.*)\/(.*)\.git/).to_a
+      _, old_ver = old.match(/^-\s+revision:\s+(\S+)/).to_a
+      _, new_ver = new.match(/^\+\s+revision:\s+(\S+)/).to_a
+    end
+
+    if (old_ver.nil? || new_ver.nil?)
+      []
+    else
+      [gem, owner, old_ver, new_ver]
+    end
   end
 
   def add_comment(repo_full_name, pr_number, compare_links)
