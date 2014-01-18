@@ -2,7 +2,6 @@ require "json"
 require "octokit"
 require "httpclient"
 require "unified_diff"
-require_relative "compare_linker/webhook_payload"
 
 class CompareLinker
   attr_reader :repo_full_name, :pr_number, :octokit
