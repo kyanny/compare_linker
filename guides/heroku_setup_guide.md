@@ -41,13 +41,13 @@ If you don't have GitHub access token, you can get it from https://github.com/se
 
 CompareLinker rack app listens GitHub's pull request webhook.
 Webhook URL is like `http://kyanny-compare-linker.herokuapp.com/webhook`.
-Don't forget `/webhook` path!
+__Don't forget `/webhook` path!__
 
 You can add webhook to your repository by `curl(1)`:
 
 ```
 $ curl -H 'Authorization: token [your_github_access_token]' \
-  -d '{"name": "web", "active": true, "events": ["pull_request"], "config": {"url": "your_heroku_app_url"}}' \
+  -d '{"name": "web", "active": true, "events": ["pull_request"], "config": {"url": "your_heroku_webhook_url"}}' \
   https://api.github.com/repos/[repo_owner_account]/[repo_name]/hooks
 ```
 
