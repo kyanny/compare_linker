@@ -10,10 +10,12 @@ class CompareLinker
 
     post "/webhook" do
       payload = CompareLinker::WebhookPayload.new(params["payload"])
-      compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
-      compare_links = compare_linker.make_compare_link.join("\n")
-      comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
-      comment_url
+      if payload.action == "opened"
+        compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
+        compare_links = compare_linker.make_compare_link.join("\n")
+        comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
+        comment_url
+      end
     end
   end
 end
