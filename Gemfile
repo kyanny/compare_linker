@@ -4,7 +4,4 @@ gem "sinatra"
 gem "octokit"
 gem "httpclient"
 gem "unified_diff"
-
-group :development do
-  gem "thin"
-end
+gem "thin"
