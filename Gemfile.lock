@@ -8,9 +8,17 @@ GEM
     multipart-post (2.0.0)
     octokit (2.7.0)
       sawyer (~> 0.5.2)
+    rack (1.5.2)
+    rack-protection (1.5.1)
+      rack
     sawyer (0.5.2)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
+    sinatra (1.4.4)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
+    tilt (1.4.1)
     unified_diff (0.3.3)
 
 PLATFORMS
@@ -19,4 +27,5 @@ PLATFORMS
 DEPENDENCIES
   httpclient
   octokit
+  sinatra
   unified_diff
