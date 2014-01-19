@@ -1,22 +1,19 @@
-require "json"
 require "octokit"
-require "httpclient"
-require "unified_diff"
-require_relative "compare_linker/lockfile_fetcher"
-require_relative "compare_linker/lockfile_comparator"
-require_relative "compare_linker/github_link_finder"
-require_relative "compare_linker/github_tag_finder"
 require_relative "compare_linker/formatter/text"
 require_relative "compare_linker/formatter/markdown"
+require_relative "compare_linker/github_link_finder"
+require_relative "compare_linker/github_tag_finder"
+require_relative "compare_linker/lockfile_comparator"
+require_relative "compare_linker/lockfile_fetcher"
 
 class CompareLinker
-  attr_reader :repo_full_name, :pr_number, :octokit
+  attr_reader :repo_full_name, :pr_number, :octokit, :compare_links
   attr_accessor :formatter
 
   def initialize(repo_full_name, pr_number)
     @repo_full_name = repo_full_name
     @pr_number = pr_number
-    @octokit   = Octokit::Client.new(access_token: ENV["OCTOKIT_ACCESS_TOKEN"]) # need to set OCTOKIT_ACCESS_TOKEN env
+    @octokit   = Octokit::Client.new(access_token: ENV["OCTOKIT_ACCESS_TOKEN"])
     @formatter = Formatter::Text.new
   end
 
@@ -30,7 +27,7 @@ class CompareLinker
 
       comparator = LockfileComparator.new
       comparator.compare(old_lockfile, new_lockfile)
-      comparator.updated_gems.map { |gem_name, gem_info|
+      @compare_links = comparator.updated_gems.map { |gem_name, gem_info|
         if gem_info[:owner].nil?
           finder = GithubLinkFinder.new(octokit)
           finder.find(gem_name)
@@ -57,6 +54,7 @@ class CompareLinker
           formatter.format(gem_info)
         end
       }
+      @compare_links
     end
   end
 
