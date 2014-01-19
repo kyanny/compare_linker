@@ -4,8 +4,8 @@ require "optparse"
 repo_full_name, pr_number = *ARGV
 if repo_full_name.nil? || pr_number.nil?
   puts <<USAGE
-Usage: ruby #{0} [repo_full_name] [pr_number]
-       ruby #{0} [repo_full_name] [pr_number] OCTOKIT_ACCESS_TOKEN=[your github access token]
+Usage: ruby #{$0} [repo_full_name] [pr_number]
+       ruby #{$0} [repo_full_name] [pr_number] OCTOKIT_ACCESS_TOKEN=[your github access token]
 USAGE
   exit!
 end
