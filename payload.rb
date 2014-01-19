@@ -5,5 +5,6 @@ payload = CompareLinker::WebhookPayload.new(ENV["payload"])
 exit if payload.action != "opened"
 
 compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
+compare_linker.formatter = CompareLinker::Formatter::Markdown.new
 compare_links = compare_linker.make_compare_links.join("\n")
 puts compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
