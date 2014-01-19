@@ -20,6 +20,6 @@ class TestCompareLinker < Test::Unit::TestCase
       read_fixture_file("git.diff")
     ).chunks
 
-    assert_equal ["tachikoma", "sanemat", "3cbbfbcf4bbf510c402615b9a179a210aac73eb9", "bf12bb1017ef68f245373df20ce708bebb90bdba"], compare_linker.parse(chunks[0])
+    assert_equal ["tachikoma", "sanemat", "3cbbfbcf4bbf510c402615b9a179a210aac73eb9", "bf12bb1017ef68f245373df20ce708bebb90bdba"], compare_linker.parse_git(chunks[0])
   end
 end

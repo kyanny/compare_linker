@@ -16,7 +16,12 @@ class CompareLinker
     UnifiedDiff.parse(
       octokit.pull_request_files(repo_full_name, pr_number).find { |resource| resource.filename == "Gemfile.lock" }.patch
     ).chunks.map { |chunk, i|
-      gem, owner, old_ver, new_ver = parse(chunk)
+      *parsed = parse_git(chunk)
+      if parsed.nil?
+        *parsed = parse(chunk)
+      end
+
+      gem, owner, old_ver, new_ver = *parsed
       next if (old_ver.nil? || new_ver.nil?)
 
       if owner.nil?
@@ -50,18 +55,29 @@ class CompareLinker
     _, old_gem, old_ver = old.match(/^-\s+(\S+) \((.*?)\)/).to_a
     _, new_gem, new_ver = new.match(/^\+\s+(\S+) \((.*?)\)/).to_a
 
+    p [old_gem, new_gem]
     gem = [old_gem, new_gem].uniq.first
-
-    if gem.nil?
-      _, owner, gem = chunk.raw_lines.find { |line| line.match(/github\.com/) }.match(/github\.com\/(.*)\/(.*)\.git/).to_a
-      _, old_ver = old.match(/^-\s+revision:\s+(\S+)/).to_a
-      _, new_ver = new.match(/^\+\s+revision:\s+(\S+)/).to_a
-    end
+    p [gem, old_ver, new_ver]
 
     if (old_ver.nil? || new_ver.nil?)
-      []
+      nil
     else
-      [gem, owner, old_ver, new_ver]
+      [gem, nil, old_ver, new_ver]
+    end
+  end
+
+  def parse_git(chunk)
+    if chunk.raw_lines.any? { |line| line.match(/^\s+GIT/) }
+      chunk.raw_lines.each_cons(2) do |cons|
+        if cons[0].to_s.match(/^-/) && cons[1].to_s.match(/^\+/)
+          old = cons[0]
+          new = cons[1]
+          _, owner, gem = chunk.raw_lines.find { |line| line.match(/github\.com/) }.match(/github\.com\/(.*)\/(.*)\.git/).to_a
+          _, old_ver = old.match(/^-\s+revision:\s+(\S+)/).to_a
+          _, new_ver = new.match(/^\+\s+revision:\s+(\S+)/).to_a
+          break [gem, owner, old_ver, new_ver]
+        end
+      end
     end
   end
 
