@@ -47,6 +47,7 @@ class CompareLinker
           # -    tachikoma (4.0.3.beta)
           # +    tachikoma (4.0.4.beta)
           if scanner.post_match
+            # XXX
           end
           scanner.skip_until(/^\+(.*)$/)
         when scanner.scan(/^- (.*)/)
