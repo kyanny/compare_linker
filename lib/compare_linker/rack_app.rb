@@ -5,7 +5,9 @@ require "compare_linker/webhook_payload"
 class CompareLinker
   class RackApp < Sinatra::Base
     get "/" do
-      ENV["URL"]
+      require 'pp'
+      pp request.env
+      warn request.env
     end
 
     post "/webhook" do
