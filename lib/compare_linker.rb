@@ -45,12 +45,6 @@ class CompareLinker
   end
 
   def parse(chunk)
-    chunk.raw_lines.each_cons(2) do |cons|
-      if cons[0].to_s.match(/^-/) && cons[1].to_s.match(/^\+/)
-        
-      end
-    end
-
     old = chunk.raw_lines.find { |line| line.match(/^-/) } # TODO: `find` ignore dependency updates
     new = chunk.raw_lines.find { |line| line.match(/^\+/) }
     _, old_gem, old_ver = old.match(/^-\s+(\S+) \((.*?)\)/).to_a
