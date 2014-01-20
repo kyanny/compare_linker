@@ -29,6 +29,9 @@ class CompareLinker
         #   comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
         #   puts comment_url
         # end
+      else
+        puts 'x'
+        puts payload.action
       end
     end
   end
