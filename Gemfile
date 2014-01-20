@@ -5,3 +5,7 @@ gem "octokit"
 gem "httpclient"
 gem "unified_diff"
 gem "thin"
+
+group :production do
+  gem "unicorn"
+end

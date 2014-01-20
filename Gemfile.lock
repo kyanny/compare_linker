@@ -7,12 +7,14 @@ GEM
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     httpclient (2.3.4.1)
+    kgio (2.8.1)
     multipart-post (2.0.0)
     octokit (2.7.0)
       sawyer (~> 0.5.2)
     rack (1.5.2)
     rack-protection (1.5.1)
       rack
+    raindrops (0.12.0)
     sawyer (0.5.2)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
@@ -25,6 +27,10 @@ GEM
       eventmachine (>= 1.0.0)
       rack (>= 1.0.0)
     tilt (1.4.1)
+    unicorn (4.8.0)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
     unified_diff (0.3.3)
 
 PLATFORMS
@@ -35,4 +41,5 @@ DEPENDENCIES
   octokit
   sinatra
   thin
+  unicorn
   unified_diff
