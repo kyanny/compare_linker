@@ -10,3 +10,7 @@ gem "omniauth-github"
 gem "slim"
 gem "dotenv"
 gem "rack-flash3"
+
+group :production do
+  gem "unicorn"
+end
