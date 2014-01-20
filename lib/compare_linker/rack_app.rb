@@ -13,6 +13,7 @@ class CompareLinker
     post "/webhook" do
       require 'pp'
       payload = CompareLinker::WebhookPayload.new(params["payload"])
+      puts payload.pretty_inspect
       if payload.action == "opened"
         compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
         compare_linker.formatter = CompareLinker::Formatter::Markdown.new
