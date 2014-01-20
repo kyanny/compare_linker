@@ -16,9 +16,6 @@ class CompareLinker
         compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
         compare_linker.formatter = CompareLinker::Formatter::Markdown.new
         compare_links = compare_linker.make_compare_links.join("\n")
-        require 'pp'
-        puts "============= DEBUG ============="
-        puts compare_links.pretty_inspect
         if compare_links.nil? || compare_links.empty?
           puts "no compare links"
         else
