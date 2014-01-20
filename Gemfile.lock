@@ -9,12 +9,20 @@ GEM
       multipart-post (>= 1.2, < 3)
     hashie (2.0.5)
     httpclient (2.3.4.1)
+    iron_core (1.0.3)
+      rest (>= 2.6.4)
+    iron_worker_ng (1.0.4)
+      bundler
+      iron_core (>= 1.0.0)
+      rubyzip (= 0.9.9)
     jwt (0.1.11)
       multi_json (>= 1.5)
     kgio (2.8.1)
     multi_json (1.8.4)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    net-http-persistent (2.9)
+    netrc (0.7.7)
     newrelic_rpm (3.7.1.182)
     oauth2 (0.9.3)
       faraday (>= 0.8, < 0.10)
@@ -41,6 +49,12 @@ GEM
     rack-protection (1.5.1)
       rack
     raindrops (0.12.0)
+    rest (2.7.0)
+      net-http-persistent
+      rest_client (>= 1.7.1)
+    rest_client (1.7.2)
+      netrc (~> 0.7.7)
+    rubyzip (0.9.9)
     sawyer (0.5.2)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
@@ -69,6 +83,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   httpclient
+  iron_worker_ng
   newrelic_rpm
   octokit
   omniauth-github

@@ -2,6 +2,7 @@ require "slim"
 require "dotenv"
 require "rack-flash"
 require "sinatra/base"
+require "iron_worker_ng"
 require "omniauth-github"
 require_relative "../compare_linker"
 require_relative "webhook_payload"
@@ -33,16 +34,11 @@ class CompareLinker
       if payload.action == "opened"
         logger.info "action=#{payload.action} repo_full_name=#{payload.repo_full_name} pr_number=#{payload.pr_number}"
 
-        compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
-        compare_linker.formatter = CompareLinker::Formatter::Markdown.new
-        compare_links = compare_linker.make_compare_links.join("\n")
-
-        if compare_links.nil? || compare_links.empty?
-          logger.info "no compare links"
-        else
-          comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
-          logger.info comment_url
-        end
+        client = IronWorkerNG::Client.new
+        client.tasks.create("make_and_post_compare_links", {
+            repo_full_name: payload.repo_full_name,
+            pr_number: payload.pr_number,
+          })
       end
     end
 
@@ -51,24 +47,18 @@ class CompareLinker
       pr_number = params["pr_number"]
       logger.info "repo_full_name=#{repo_full_name} pr_number=#{pr_number}"
 
-      compare_linker = CompareLinker.new(repo_full_name, pr_number)
-      compare_linker.formatter = CompareLinker::Formatter::Markdown.new
-      compare_links = compare_linker.make_compare_links.join("\n")
-
-      if compare_links.nil? || compare_links.empty?
-        logger.info "no compare links"
-      else
-        comment_url = compare_linker.add_comment(repo_full_name, pr_number, compare_links)
-        logger.info comment_url
-      end
+      client = IronWorkerNG::Client.new
+      client.tasks.create("make_and_post_compare_links", {
+          repo_full_name: repo_full_name,
+          pr_number: pr_number,
+        })
     end
 
     get "/auth/github/callback" do
-      auth = request.env["omniauth.auth"]
-      provider = auth["provider"]
-      uid = auth["uid"]
-      access_token = auth["credentials"]["token"]
-      p [provider, uid, access_token]
+      # auth = request.env["omniauth.auth"]
+      # provider = auth["provider"]
+      # uid = auth["uid"]
+      # access_token = auth["credentials"]["token"]
       flash[:notice] = "Login successfully"
       redirect "/"
     end

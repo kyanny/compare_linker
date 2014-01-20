@@ -9,6 +9,7 @@ gem "omniauth-github"
 gem "slim"
 gem "dotenv"
 gem "rack-flash3"
+gem "iron_worker_ng"
 
 group :development do
   gem "thin"
