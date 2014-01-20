@@ -1,17 +1,30 @@
+require "slim"
+require "dotenv"
+require "rack-flash"
 require "sinatra/base"
-require "compare_linker"
-require "compare_linker/webhook_payload"
+require "omniauth-github"
+require_relative "../compare_linker"
+require_relative "webhook_payload"
 
 class CompareLinker
   class RackApp < Sinatra::Base
     configure do
       enable :logging
+      set :views, File.join(__dir__, '..', '..', 'views')
+      set :public_folder, File.join(__dir__, '..', '..', 'public')
+      Slim::Engine.default_options[:pretty] = true
+      Dotenv.load!
+    end
+
+    # keep this order - Rack::Session first, Rack::Flash later
+    use Rack::Session::Cookie
+    use Rack::Flash
+    use OmniAuth::Builder do
+      provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "public_repo"
     end
 
     get "/" do
-      require 'pp'
-      pp request.env
-      warn request.env
+      slim :index
     end
 
     post "/webhook" do
@@ -48,6 +61,16 @@ class CompareLinker
         comment_url = compare_linker.add_comment(repo_full_name, pr_number, compare_links)
         logger.info comment_url
       end
+    end
+
+    get "/auth/github/callback" do
+      auth = request.env["omniauth.auth"]
+      provider = auth["provider"]
+      uid = auth["uid"]
+      access_token = auth["credentials"]["token"]
+      p [provider, uid, access_token]
+      flash[:notice] = "Login successfully"
+      redirect "/"
     end
   end
 end

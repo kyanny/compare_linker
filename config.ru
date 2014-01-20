@@ -1,4 +1,3 @@
-$: << File.expand_path("lib")
-require "compare_linker/rack_app"
+require_relative "lib/compare_linker/rack_app"
 
 CompareLinker::RackApp.run!
