@@ -17,7 +17,7 @@ class CompareLinker
     end
 
     # keep this order - Rack::Session first, Rack::Flash later
-    use Rack::Session::Cookie
+    use Rack::Session::Cookie, secret: ENV["GITHUB_KEY"] + ENV["GITHUB_SECRET"]
     use Rack::Flash
     use OmniAuth::Builder do
       provider :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: "public_repo"
