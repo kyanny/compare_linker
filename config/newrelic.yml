@@ -3,9 +3,9 @@
 # Ruby, Java, .NET, PHP, and Python applications with deep visibility and low overhead.
 # For more information, visit www.newrelic.com.
 #
-# Generated January 20, 2014
+# Generated June 03, 2013
 #
-# This configuration file is custom generated for app21359512@heroku.com
+# This configuration file is custom generated for Barsoom
 
 
 # Here are the settings that are common to all environments
@@ -42,7 +42,7 @@ common: &default_settings
   #       - Ajax Service
   #       - All Services
   #
-  app_name: kyanny-compare-linker
+  app_name: <%= ENV["NEW_RELIC_APP_NAME"] %>
 
   # When "true", the agent collects performance data about your
   # application and reports this data to the New Relic service at
@@ -57,7 +57,7 @@ common: &default_settings
   # The newrelic agent generates its own log file to keep its logging
   # information separate from that of your application. Specify its
   # log level here.
-  log_level: debug
+  log_level: info
 
   # Optionally set the path to the log file This is expanded from the
   # root directory (may be relative or absolute, e.g. 'log/' or
@@ -224,4 +224,4 @@ production:
 staging:
   <<: *default_settings
   monitor_mode: true
-  app_name: kyanny-compare-linker (Staging)
+  app_name: <%= ENV["NEW_RELIC_APP_NAME"] %> (Staging)
