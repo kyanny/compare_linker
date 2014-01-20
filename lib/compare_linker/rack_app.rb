@@ -11,19 +11,18 @@ class CompareLinker
     end
 
     post "/webhook" do
-      require 'pp'
       payload = CompareLinker::WebhookPayload.new(params["payload"])
-      puts payload.pretty_inspect
       if payload.action == "opened"
         compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
         compare_linker.formatter = CompareLinker::Formatter::Markdown.new
         compare_links = compare_linker.make_compare_links.join("\n")
-        if compare_links.nil?
-          puts "no compare links"
-        else
-          comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
-          puts comment_url
-        end
+        puts compare_links
+        # if compare_links.nil?
+        #   puts "no compare links"
+        # else
+        #   comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
+        #   puts comment_url
+        # end
       end
     end
   end
