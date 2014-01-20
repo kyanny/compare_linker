@@ -13,7 +13,7 @@ class CompareLinker
       set :views, File.join(__dir__, '..', '..', 'views')
       set :public_folder, File.join(__dir__, '..', '..', 'public')
       Slim::Engine.default_options[:pretty] = true
-      Dotenv.load!
+      Dotenv.load
     end
 
     # keep this order - Rack::Session first, Rack::Flash later
