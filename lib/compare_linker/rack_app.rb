@@ -19,7 +19,7 @@ class CompareLinker
         require 'pp'
         puts "============= DEBUG ============="
         puts compare_links.pretty_inspect
-        if compare_links.nil?
+        if compare_links.nil? || compare_links.empty?
           puts "no compare links"
         else
           comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)

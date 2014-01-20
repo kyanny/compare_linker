@@ -18,8 +18,12 @@ class CompareLinker
   end
 
   def make_compare_links
+    p 'a1'
     if octokit.pull_request_files(repo_full_name, pr_number).find { |resource| resource.filename == "Gemfile.lock" }
+      p 'a2'
       pull_request = octokit.pull_request(repo_full_name, pr_number)
+      require 'pp'
+      pp pull_request
 
       fetcher = LockfileFetcher.new(octokit)
       old_lockfile = fetcher.fetch(repo_full_name, pull_request.base.sha)
