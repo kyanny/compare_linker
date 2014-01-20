@@ -27,5 +27,6 @@ compare_linker = CompareLinker.new(repo_full_name, pr_number.to_i)
 compare_linker.formatter = options[:formatter] if options[:formatter]
 puts compare_linker.make_compare_links
 if options[:post_comment]
+  compare_linker.formatter = CompareLinker::Formatter::Markdown.new
   puts compare_linker.add_comment(repo_full_name, pr_number, compare_linker.compare_links)
 end
