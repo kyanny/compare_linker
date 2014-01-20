@@ -16,6 +16,10 @@ class CompareLinker
       Dotenv.load
     end
 
+    configure :production do
+      require "newrelic_rpm"
+    end
+
     # keep this order - Rack::Session first, Rack::Flash later
     use Rack::Session::Cookie, secret: ENV["GITHUB_KEY"] + ENV["GITHUB_SECRET"]
     use Rack::Flash
