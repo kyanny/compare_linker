@@ -12,7 +12,7 @@ GEM
     octokit (2.7.0)
       sawyer (~> 0.5.2)
     rack (1.5.2)
-    rack-protection (1.5.1)
+    rack-protection (1.5.2)
       rack
     raindrops (0.12.0)
     sawyer (0.5.2)
