@@ -4,6 +4,10 @@ require "compare_linker/webhook_payload"
 
 class CompareLinker
   class RackApp < Sinatra::Base
+    configure do
+      enable :logging
+    end
+
     get "/" do
       require 'pp'
       pp request.env
@@ -13,14 +17,15 @@ class CompareLinker
     post "/webhook" do
       payload = CompareLinker::WebhookPayload.new(params["payload"])
       if payload.action == "opened"
+        logger.info "action=#{payload.action} repo_full_name=#{payload.repo_full_name} pr_number=#{payload.pr_number}"
         compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
         compare_linker.formatter = CompareLinker::Formatter::Markdown.new
         compare_links = compare_linker.make_compare_links.join("\n")
         if compare_links.nil? || compare_links.empty?
-          puts "no compare links"
+          logger.info "no compare links"
         else
           comment_url = compare_linker.add_comment(payload.repo_full_name, payload.pr_number, compare_links)
-          puts comment_url
+          logger.info comment_url
         end
       end
     end
