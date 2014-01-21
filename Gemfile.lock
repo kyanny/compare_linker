@@ -61,7 +61,6 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
-    unified_diff (0.3.3)
 
 PLATFORMS
   ruby
@@ -77,4 +76,3 @@ DEPENDENCIES
   slim
   thin
   unicorn
-  unified_diff
