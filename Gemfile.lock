@@ -40,6 +40,7 @@ GEM
       rack
     rack-protection (1.5.1)
       rack
+    rack-ssl-enforcer (0.2.6)
     raindrops (0.12.0)
     sawyer (0.5.2)
       addressable (~> 2.3.5)
@@ -72,6 +73,7 @@ DEPENDENCIES
   octokit
   omniauth-github
   rack-flash3
+  rack-ssl-enforcer
   sinatra
   slim
   thin

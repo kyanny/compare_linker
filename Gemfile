@@ -18,4 +18,5 @@ end
 
 group :production do
   gem "unicorn"
+  gem "rack-ssl-enforcer"
 end
