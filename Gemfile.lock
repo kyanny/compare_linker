@@ -1,7 +1,14 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (3.2.16)
+      activesupport (= 3.2.16)
+      builder (~> 3.0.0)
+    activesupport (3.2.16)
+      i18n (~> 0.6, >= 0.6.4)
+      multi_json (~> 1.0)
     addressable (2.3.5)
+    builder (3.0.4)
     daemons (1.1.9)
     dotenv (0.9.0)
     eventmachine (1.0.3)
@@ -9,9 +16,16 @@ GEM
       multipart-post (>= 1.2, < 3)
     hashie (2.0.5)
     httpclient (2.3.4.1)
+    i18n (0.6.9)
     jwt (0.1.11)
       multi_json (>= 1.5)
     kgio (2.8.1)
+    mongoid (3.1.6)
+      activemodel (~> 3.2)
+      moped (~> 1.4)
+      origin (~> 1.0)
+      tzinfo (~> 0.3.29)
+    moped (1.5.1)
     multi_json (1.8.4)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -35,6 +49,7 @@ GEM
       multi_json (~> 1.3)
       oauth2 (~> 0.9.3)
       omniauth (~> 1.2)
+    origin (1.1.0)
     rack (1.5.2)
     rack-flash3 (1.0.5)
       rack
@@ -58,6 +73,7 @@ GEM
       eventmachine (>= 1.0.0)
       rack (>= 1.0.0)
     tilt (1.4.1)
+    tzinfo (0.3.38)
     unicorn (4.8.0)
       kgio (~> 2.6)
       rack
@@ -69,6 +85,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   httpclient
+  mongoid
   newrelic_rpm
   octokit
   omniauth-github

@@ -2,10 +2,18 @@ doctype html
 html
   head
     title Compare Linker
+    script src="http://code.jquery.com/jquery-2.0.3.min.js"
+    script src="/js/app.js"
   body
     div
       h1 Compare Linker
       h2
-        - if flash[:notice]
-          = flash[:notice]
+        = flash[:notice] if flash[:notice]
         a href="/auth/github"  Login with GitHub 
+      - if @repos
+        ul
+        - @repos.each do |repo|
+          li
+            a href="https://github.com/#{repo.full_name}" target="_blank"
+              = repo.full_name
+            button data-repo-full-name="#{repo.full_name}" Add Webhook

@@ -8,6 +8,7 @@ gem "omniauth-github"
 gem "slim"
 gem "dotenv"
 gem "rack-flash3"
+gem "mongoid"
 
 group :development do
   gem "thin"

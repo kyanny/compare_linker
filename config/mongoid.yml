@@ -1,0 +1,17 @@
+development:
+  sessions:
+    default:
+      uri: mongodb://localhost:27017/comparelinker
+test:
+  sessions:
+    default:
+      uri: mongodb://localhost:27017/comparelinker
+production:
+  sessions:
+    default:
+      uri: <%= ENV['MONGOLAB_URI'] %>
+      options:
+        consistency: :strong
+        max_retries: 30
+        retry_interval: 1
+        timeout: 30

@@ -1,5 +1,6 @@
 require "slim"
 require "dotenv"
+require "mongoid"
 require "rack-flash"
 require "sinatra/base"
 require "omniauth-github"
@@ -12,13 +13,50 @@ rescue LoadError
 end
 
 class CompareLinker
+  class Authorization
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
+    field :provider, type: String
+    field :uid, type: String
+
+    has_one :credential
+  end
+
+  class Credential
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
+    field :token, type: String
+
+    belongs_to :authorization
+    has_many :repos
+  end
+
+  class Repo
+    include Mongoid::Document
+    include Mongoid::Timestamps
+
+    field :repo_full_name, type: String
+
+    belongs_to :credential
+  end
+
+  # repo_full_name = payload.repo_full_name
+  # repo = Repo.find_by_repo_full_name(repo_full_name)
+  # if repo.credential
+  #   access_token = repo.credential.token
+  #   octokit = Octokit::Client.new(access_token: access_token)
+  # end
+
   class RackApp < Sinatra::Base
     configure do
       enable :logging
-      set :views, File.join(__dir__, '..', '..', 'views')
-      set :public_folder, File.join(__dir__, '..', '..', 'public')
+      set :views, File.join(__dir__, "..", "..", 'views')
+      set :public_folder, File.join(__dir__, "..", "..", 'public')
       Slim::Engine.default_options[:pretty] = true
       Dotenv.load
+      Mongoid.load!(File.join(__dir__, "..", "..", 'config', 'mongoid.yml'))
     end
 
     configure :production do
@@ -34,6 +72,13 @@ class CompareLinker
     end
 
     get "/" do
+      if session["uid"]
+        authorization = Authorization.find_by(uid: session["uid"])
+        if authorization.credential
+          octokit = Octokit::Client.new(access_token: authorization.credential.token)
+          @repos = octokit.repos
+        end
+      end
       slim :index
     end
 
@@ -73,12 +118,31 @@ class CompareLinker
       end
     end
 
+    post "/add_webhook" do
+      halt unless params["repo_full_name"]
+
+      authorization = Authorization.find_by(uid: session["uid"])
+      credential = authorization.credential
+      repos = credential.repos
+      if repo = repos.find { |r| r.full_name == params["repo_full_name"] }
+        # octokit.add_webhook(params["repo_full_name"], {"events":"pull_request"})
+        # render "ok"
+      else
+        halt
+      end
+    end
+
     get "/auth/github/callback" do
       auth = request.env["omniauth.auth"]
-      provider = auth["provider"]
-      uid = auth["uid"]
-      access_token = auth["credentials"]["token"]
-      p [provider, uid, access_token]
+      authorization = Authorization.find_or_create_by(
+        provider: auth["provider"],
+        uid: auth["uid"],
+      )
+      credential = authorization.credential.find_or_create_by(
+        token: auth["credentials"]["token"],
+      )
+      logger.info "provider=#{auth['provider']} uid=#{auth['uid']} authorization=#{authorization.id} credential=#{credential.id}"
+      session[:uid] = auth["uid"]
       flash[:notice] = "Login successfully"
       redirect "/"
     end
