@@ -18,7 +18,6 @@ class CompareLinker
 
     configure :production do
       require "newrelic_rpm"
-      set :force_ssl, true
     end
 
     # keep this order - Rack::Session first, Rack::Flash later
