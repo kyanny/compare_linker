@@ -6,6 +6,11 @@ require "omniauth-github"
 require_relative "../compare_linker"
 require_relative "webhook_payload"
 
+begin
+  require "rack-sslenforcer"
+rescue LoadError
+end
+
 class CompareLinker
   class RackApp < Sinatra::Base
     configure do
