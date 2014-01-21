@@ -3,4 +3,4 @@ runtime "ruby"
 dir "lib"
 gemfile "Gemfile"
 # exec is the file that will be executed:
-exec "lib/compare_linker/iron_worker.rb"
+exec "lib/compare_linker/make_and_post_compare_links_worker.rb"

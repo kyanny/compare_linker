@@ -7,13 +7,13 @@ require_relative "compare_linker/lockfile_comparator"
 require_relative "compare_linker/lockfile_fetcher"
 
 class CompareLinker
-  attr_reader :repo_full_name, :pr_number, :octokit, :compare_links
-  attr_accessor :formatter
+  attr_reader :repo_full_name, :pr_number, :compare_links
+  attr_accessor :octokit, :formatter
 
   def initialize(repo_full_name, pr_number)
     @repo_full_name = repo_full_name
     @pr_number = pr_number
-    @octokit   = Octokit::Client.new(access_token: ENV["OCTOKIT_ACCESS_TOKEN"])
+    @octokit ||= Octokit::Client.new(access_token: ENV["OCTOKIT_ACCESS_TOKEN"])
     @formatter = Formatter::Text.new
   end
 

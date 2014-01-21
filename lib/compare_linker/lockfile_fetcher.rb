@@ -14,6 +14,7 @@ class CompareLinker
       ).find { |content|
         content.name == "Gemfile.lock"
       }
+      puts octokit.blob(repo_full_name, lockfile_content.sha).content
       Bundler::LockfileParser.new(
         Base64.decode64(
           octokit.blob(repo_full_name, lockfile_content.sha).content
