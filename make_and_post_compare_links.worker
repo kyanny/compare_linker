@@ -1,4 +1,6 @@
 # define the runtime language
 runtime "ruby"
+dir "lib"
+gemfile "Gemfile"
 # exec is the file that will be executed:
 exec "lib/compare_linker/iron_worker.rb"
