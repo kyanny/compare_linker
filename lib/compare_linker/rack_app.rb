@@ -7,7 +7,7 @@ require_relative "../compare_linker"
 require_relative "webhook_payload"
 
 begin
-  require "rack-sslenforcer"
+  require "rack-ssl-enforcer"
 rescue LoadError
 end
 
