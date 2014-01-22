@@ -136,9 +136,20 @@ class CompareLinker
       authorization = Authorization.find_by(uid: session["uid"])
       credential = authorization.credential
       repos = credential.repos
-      if repo = repos.find { |r| r.full_name == params["repo_full_name"] }
-        # octokit.add_webhook(params["repo_full_name"], {"events":"pull_request"})
-        # render "ok"
+      if repos.any? { |repo| reop.full_name == params["repo_full_name"] }
+        octokit.create_hook(
+          params["repo_full_name"],
+          "web",
+          {
+            url: "https://#{request.host}/webhook",
+            content_type: "json",
+          },
+          {
+            events: ["pull_request"],
+            active: true,
+          }
+        )
+        "ok"
       else
         halt
       end
