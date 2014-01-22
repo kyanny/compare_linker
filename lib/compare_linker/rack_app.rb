@@ -19,6 +19,7 @@ class CompareLinker
 
     field :provider, type: String
     field :uid, type: String
+    field :nickname, type: String
 
     has_one :credential
   end
@@ -41,13 +42,6 @@ class CompareLinker
 
     belongs_to :credential
   end
-
-  # repo_full_name = payload.repo_full_name
-  # repo = Repo.find_by_repo_full_name(repo_full_name)
-  # if repo.credential
-  #   access_token = repo.credential.token
-  #   octokit = Octokit::Client.new(access_token: access_token)
-  # end
 
   class RackApp < Sinatra::Base
     configure do
@@ -88,7 +82,16 @@ class CompareLinker
       if payload.action == "opened"
         logger.info "action=#{payload.action} repo_full_name=#{payload.repo_full_name} pr_number=#{payload.pr_number}"
 
+        repo = Repo.find_by_repo_full_name(payload.repo_full_name)
+        if repo.credential
+          access_token = repo.credential.token
+          octokit = Octokit::Client.new(access_token: access_token)
+        end
+
         compare_linker = CompareLinker.new(payload.repo_full_name, payload.pr_number)
+        if octokit
+          compare_linker.octokit = octokit
+        end
         compare_linker.formatter = CompareLinker::Formatter::Markdown.new
         compare_links = compare_linker.make_compare_links.join("\n")
 
@@ -106,7 +109,16 @@ class CompareLinker
       pr_number = params["pr_number"]
       logger.info "repo_full_name=#{repo_full_name} pr_number=#{pr_number}"
 
+      repo = Repo.find_by_repo_full_name(repo_full_name)
+      if repo.credential
+        access_token = repo.credential.token
+        octokit = Octokit::Client.new(access_token: access_token)
+      end
+
       compare_linker = CompareLinker.new(repo_full_name, pr_number)
+      if octokit
+        compare_linker.octokit = octokit
+      end
       compare_linker.formatter = CompareLinker::Formatter::Markdown.new
       compare_links = compare_linker.make_compare_links.join("\n")
 
@@ -137,11 +149,12 @@ class CompareLinker
       authorization = Authorization.find_or_create_by(
         provider: auth["provider"],
         uid: auth["uid"],
+        nickname: auth["info"]["nickname"],
       )
       credential = authorization.credential.find_or_create_by(
         token: auth["credentials"]["token"],
       )
-      logger.info "provider=#{auth['provider']} uid=#{auth['uid']} authorization=#{authorization.id} credential=#{credential.id}"
+      logger.info "provider=#{auth['provider']} uid=#{auth['uid']} nickname=#{auth['ifno']['nickname']} authorization=#{authorization.id} credential=#{credential.id}"
       session[:uid] = auth["uid"]
       flash[:notice] = "Login successfully"
       redirect "/"
