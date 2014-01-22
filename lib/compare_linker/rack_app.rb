@@ -79,6 +79,10 @@ class CompareLinker
     end
 
     post "/webhook" do
+      p "@@@@@@@@@@@@@@@@@@@@"
+      p params.keys
+      p params["payload"]
+      p "@@@@@@@@@@@@@@@@@@@@"
       payload = CompareLinker::WebhookPayload.new(params["payload"])
 
       if payload.action == "opened"
