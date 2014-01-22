@@ -164,7 +164,8 @@ class CompareLinker
         uid: auth["uid"],
         nickname: auth["info"]["nickname"],
       )
-      credential = authorization.credential.find_or_create_by(
+      credential = Credential.find_or_create_by(
+        authorization: authorization,
         token: auth["credentials"]["token"],
       )
       logger.info "provider=#{auth['provider']} uid=#{auth['uid']} nickname=#{auth['ifno']['nickname']} authorization=#{authorization.id} credential=#{credential.id}"
