@@ -138,7 +138,7 @@ class CompareLinker
       authorization = Authorization.find_by(uid: session["uid"])
       credential = authorization.credential
       repos = credential.repos
-      if repos.none? { |repo| reop.full_name == params["repo_full_name"] }
+      if repos.none? { |repo| repo.full_name == params["repo_full_name"] }
         octokit = Octokit::Client.new(access_token: authorization.credential.token)
         octokit.create_hook(
           params["repo_full_name"],
