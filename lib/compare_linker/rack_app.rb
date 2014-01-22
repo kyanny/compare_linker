@@ -1,6 +1,7 @@
 require "slim"
 require "dotenv"
 require "mongoid"
+require "octokit"
 require "rack-flash"
 require "sinatra/base"
 require "omniauth-github"
@@ -70,7 +71,8 @@ class CompareLinker
         authorization = Authorization.find_by(uid: session["uid"])
         if authorization.credential
           octokit = Octokit::Client.new(access_token: authorization.credential.token)
-          @repos = octokit.repos
+          octokit.auto_paginate = true
+          @repos = octokit.repos(nil, {sort: "created"})
         end
       end
       slim :index

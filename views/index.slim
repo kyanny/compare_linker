@@ -9,7 +9,8 @@ html
       h1 Compare Linker
       h2
         = flash[:notice] if flash[:notice]
-        a href="/auth/github"  Login with GitHub 
+        - unless session[:uid]
+          a href="/auth/github"  Login with GitHub
       - if @repos
         ul
         - @repos.each do |repo|
@@ -17,3 +18,4 @@ html
             a href="https://github.com/#{repo.full_name}" target="_blank"
               = repo.full_name
             button data-repo-full-name="#{repo.full_name}" Add Webhook
+            a href="https://github.com/#{repo.full_name}/settings/hooks" target="_blank" Manage Webhook
