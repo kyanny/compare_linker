@@ -168,7 +168,7 @@ class CompareLinker
         authorization: authorization,
         token: auth["credentials"]["token"],
       )
-      logger.info "provider=#{auth['provider']} uid=#{auth['uid']} nickname=#{auth['ifno']['nickname']} authorization=#{authorization.id} credential=#{credential.id}"
+      logger.info "provider=#{auth['provider']} uid=#{auth['uid']} nickname=#{auth['info']['nickname']} authorization=#{authorization.id} credential=#{credential.id}"
       session[:uid] = auth["uid"]
       flash[:notice] = "Login successfully"
       redirect "/"
