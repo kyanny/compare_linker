@@ -79,11 +79,6 @@ class CompareLinker
     end
 
     post "/webhook" do
-      p "@@@@@@@@@@@@@@@@@@@@"
-      p request.env['rack.input'].read
-      p params.keys
-      p params["payload"]
-      p "@@@@@@@@@@@@@@@@@@@@"
       payload = CompareLinker::WebhookPayload.new(params["payload"])
 
       if payload.action == "opened"
@@ -150,7 +145,6 @@ class CompareLinker
           "web",
           {
             url: "https://#{request.host}/webhook",
-            content_type: "json",
           },
           {
             events: ["pull_request"],
