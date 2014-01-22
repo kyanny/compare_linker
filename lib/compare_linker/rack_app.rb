@@ -153,6 +153,10 @@ class CompareLinker
             active: true,
           }
         )
+        Repo.find_or_create_by(
+          credential: credential,
+          repo_full_name: params["repo_full_name"],
+        )
         "ok"
       else
         halt
