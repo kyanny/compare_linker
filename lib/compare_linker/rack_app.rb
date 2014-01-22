@@ -79,9 +79,9 @@ class CompareLinker
     end
 
     post "/webhook" do
-      logger.inro "@"*80
+      logger.info "@"*80
       logger.info request.env.inspect
-      logger.inro "@"*80
+      logger.info "@"*80
       logger.info params
       payload = CompareLinker::WebhookPayload.new(params["payload"])
 
