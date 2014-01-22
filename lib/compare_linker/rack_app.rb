@@ -84,7 +84,7 @@ class CompareLinker
       if payload.action == "opened"
         logger.info "action=#{payload.action} repo_full_name=#{payload.repo_full_name} pr_number=#{payload.pr_number}"
 
-        repo = Repo.find_by_repo_full_name(payload.repo_full_name)
+        repo = Repo.find_by(repo_full_name: payload.repo_full_name)
         if repo.credential
           access_token = repo.credential.token
           octokit = Octokit::Client.new(access_token: access_token)
