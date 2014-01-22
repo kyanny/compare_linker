@@ -112,8 +112,8 @@ class CompareLinker
       pr_number = params["pr_number"]
       logger.info "repo_full_name=#{repo_full_name} pr_number=#{pr_number}"
 
-      repo = Repo.find_by_repo_full_name(repo_full_name)
-      if repo.credential
+      repo = Repo.find_by(repo_full_name: repo_full_name)
+      if repo && repo.credential
         access_token = repo.credential.token
         octokit = Octokit::Client.new(access_token: access_token)
       end
