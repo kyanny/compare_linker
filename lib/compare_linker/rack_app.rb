@@ -80,6 +80,7 @@ class CompareLinker
 
     post "/webhook" do
       p "@@@@@@@@@@@@@@@@@@@@"
+      p request.env['rack.input'].read
       p params.keys
       p params["payload"]
       p "@@@@@@@@@@@@@@@@@@@@"
