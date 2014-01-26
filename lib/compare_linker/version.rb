@@ -1,3 +1,3 @@
-module CompareLinker
+class CompareLinker
   VERSION = "0.0.1"
 end
