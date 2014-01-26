@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = CompareLinker::VERSION
   spec.authors       = ["Kensuke Nagae"]
   spec.email         = ["kyanny@gmail.com"]
-  spec.description   = %q{Create github compare view urls for pull request from diff of Gemfile.lock}
-  spec.summary       = %q{Create github compare view urls for pull request}
+  spec.description   = %q{Create GitHub's compare view URLs for pull request from diff of Gemfile.lock}
+  spec.summary       = %q{Create GitHub's compare view URLs for pull request}
   spec.homepage      = "https://github.com/kyanny/compare_linker"
   spec.license       = "MIT"
 
