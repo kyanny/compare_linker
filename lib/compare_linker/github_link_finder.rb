@@ -22,7 +22,7 @@ class CompareLinker
       if github_url.nil?
         @homepage_uri = gem_info["homepage_uri"]
       else
-        _, @repo_owner, @repo_name = github_url.match(/github\.com\/(\w+)\/(.*)/).to_a
+        _, @repo_owner, @repo_name = github_url.match(%r!github\.com/([^/]+)/([^/]+)!).to_a
       end
     end
 
