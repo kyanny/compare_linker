@@ -17,8 +17,8 @@ class CompareLinker
               updated_gems[old_spec.name] = {
                 owner: owner,
                 gem_name: gem_name,
-                old_ver: old_rev,
-                new_ver: new_rev,
+                old_rev: old_rev,
+                new_rev: new_rev,
               }
             elsif old_spec.version != new_spec.version
               updated_gems[old_spec.name] = {

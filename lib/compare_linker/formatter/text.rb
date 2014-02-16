@@ -7,8 +7,8 @@ class CompareLinker
         g = OpenStruct.new(gem_info)
 
         text = case
-        when g.owner
-          "#{g.gem_name}: https://github.com/#{g.owner}/#{g.gem_name}/compare/#{g.old_ver}...#{g.new_ver}"
+        when g.owner && g.old_rev && g.new_rev
+          "#{g.gem_name}: https://github.com/#{g.owner}/#{g.gem_name}/compare/#{g.old_rev}...#{g.new_rev}"
         when g.homepage_uri
           "#{g.gem_name} (#{g.homepage_uri}): #{g.old_ver} => #{g.new_ver}"
         when g.old_tag && g.new_tag
