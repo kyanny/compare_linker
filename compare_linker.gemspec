@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["kyanny@gmail.com"]
   spec.description   = %q{Create GitHub's compare view URLs for pull request from diff of Gemfile.lock}
   spec.summary       = %q{Create GitHub's compare view URLs for pull request}
-  spec.homepage      = "https://github.com/kyanny/compare_linker"
+  spec.homepage      = "https://github.com/masutaka/compare_linker"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
