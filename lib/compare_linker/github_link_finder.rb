@@ -1,5 +1,6 @@
 require "json"
 require "httpclient"
+require "net/http"
 
 class CompareLinker
   class GithubLinkFinder
@@ -22,12 +23,28 @@ class CompareLinker
       if github_url.nil?
         @homepage_uri = gem_info["homepage_uri"]
       else
+        github_url = redirect_url(github_url)
         _, @repo_owner, @repo_name = github_url.match(%r!github\.com/([^/]+)/([^/]+)!).to_a
       end
     end
 
     def repo_full_name
       "#{@repo_owner}/#{repo_name}"
+    end
+
+    private
+
+    def redirect_url(url, limit = 5)
+      raise ArgumentError, 'HTTP redirect too deep' if limit <= 0
+      response = Net::HTTP.get_response(URI.parse(url))
+      case response
+      when Net::HTTPSuccess
+        url
+      when Net::HTTPRedirection
+        redirect_url(response['location'], limit - 1)
+      else
+        raise ItemNotFound
+      end
     end
   end
 end
