@@ -28,5 +28,16 @@ describe CompareLinker::GithubLinkFinder do
         expect(subject.repo_name).to eq "webtranslateit"
       end
     end
+
+    context "if gem not found on rubygems.org" do
+      before do
+        allow(HTTPClient).to receive_message_chain(:get, :body).and_return load_fixture("not_found.json")
+      end
+
+      it "extracts homepage_uri" do
+        subject.find("not_found")
+        expect(subject.homepage_uri).to eq "https://rubygems.org/gems/not_found"
+      end
+    end
   end
 end
