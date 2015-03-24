@@ -36,7 +36,7 @@ describe CompareLinker::GithubLinkFinder do
 
       it "extracts homepage_uri" do
         subject.find("not_found")
-        expect(subject.homepage_uri).to eq("https://rubygems.org/gems/not_found")
+        expect(subject.homepage_uri).to eq "https://rubygems.org/gems/not_found"
       end
     end
   end

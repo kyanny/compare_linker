@@ -26,6 +26,7 @@ class CompareLinker
         github_url = redirect_url(github_url)
         _, @repo_owner, @repo_name = github_url.match(%r!github\.com/([^/]+)/([^/]+)!).to_a
       end
+
     rescue JSON::ParserError
       @homepage_uri = "https://rubygems.org/gems/#{gem_name}"
     end
