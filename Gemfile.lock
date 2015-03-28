@@ -8,7 +8,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.3.7)
+    addressable (2.3.8)
     diff-lcs (1.2.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
