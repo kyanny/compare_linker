@@ -47,7 +47,7 @@ class CompareLinker
       when Net::HTTPRedirection
         redirect_url(to_absolute(response['location'], uri), limit - 1)
       else
-        raise ItemNotFound
+        raise 'item not found'
       end
     end
 
