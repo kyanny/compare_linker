@@ -9,6 +9,7 @@ describe CompareLinker::GithubLinkFinder do
   describe "#find" do
     before do
       allow(HTTPClient).to receive_message_chain(:get, :body).and_return load_fixture("rails.json")
+      allow(subject).to receive(:redirect_url).and_return "http://github.com/rails/rails"
     end
 
     it "extracts repo_owner and repo_name" do
@@ -20,6 +21,7 @@ describe CompareLinker::GithubLinkFinder do
     context "if github url includes trailing slash" do
       before do
         allow(HTTPClient).to receive_message_chain(:get, :body).and_return load_fixture("web_translate_it.json")
+        allow(subject).to receive(:redirect_url).and_return "http://github.com/atelierconvivialite/webtranslateit/"
       end
 
       it "extracts repo_owner and repo_name without trailing slash" do
