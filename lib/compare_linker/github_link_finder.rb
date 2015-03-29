@@ -39,15 +39,22 @@ class CompareLinker
 
     def redirect_url(url, limit = 5)
       raise ArgumentError, 'HTTP redirect too deep' if limit <= 0
-      response = Net::HTTP.get_response(URI.parse(url))
+      uri = URI.parse(url)
+      response = Net::HTTP.get_response(uri)
       case response
       when Net::HTTPSuccess
         url
       when Net::HTTPRedirection
-        redirect_url(response['location'], limit - 1)
+        redirect_url(to_absolute(response['location'], uri), limit - 1)
       else
-        raise ItemNotFound
+        raise 'item not found'
       end
+    end
+
+    def to_absolute(location, uri)
+      return location if location =~ /\Ahttp/
+      # RFC2394 violation?
+      "#{uri.scheme}://#{uri.host}#{location}"
     end
   end
 end
