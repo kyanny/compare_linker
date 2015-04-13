@@ -26,7 +26,7 @@ class CompareLinker
         @homepage_uri = gem_info["homepage_uri"]
       end
 
-    rescue JSON::ParserError
+    rescue HTTPClient::BadResponseError
       @homepage_uri = "https://rubygems.org/gems/#{gem_name}"
     end
 

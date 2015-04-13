@@ -33,7 +33,8 @@ describe CompareLinker::GithubLinkFinder do
 
     context "if gem not found on rubygems.org" do
       before do
-        allow(HTTPClient).to receive(:get_content).and_return load_fixture("not_found.json")
+        exception = HTTPClient::BadResponseError.new "unexpected response:..."
+        allow(HTTPClient).to receive(:get_content).and_raise exception
       end
 
       it "extracts homepage_uri" do
