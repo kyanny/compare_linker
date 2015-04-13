@@ -41,5 +41,17 @@ describe CompareLinker::GithubLinkFinder do
         expect(subject.homepage_uri).to eq "https://rubygems.org/gems/not_found"
       end
     end
+
+    context "if homepage_uri is '404 not found'" do
+      before do
+        allow(HTTPClient).to receive(:get_content).and_return load_fixture("coffee-script-source.json")
+        allow(subject).to receive(:redirect_url).and_return nil
+      end
+
+      it "extracts homepage_uri" do
+        subject.find("coffee-script-source")
+        expect(subject.homepage_uri).to eq "http://jashkenas.github.com/coffee-script/"
+      end
+    end
   end
 end

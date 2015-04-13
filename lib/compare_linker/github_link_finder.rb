@@ -20,11 +20,10 @@ class CompareLinker
         gem_info["source_code_uri"]
       ].find { |uri| uri.to_s.match(/github\.com\//) }
 
-      if github_url.nil?
-        @homepage_uri = gem_info["homepage_uri"]
-      else
-        github_url = redirect_url(github_url)
+      if github_url = redirect_url(github_url)
         _, @repo_owner, @repo_name = github_url.match(%r!github\.com/([^/]+)/([^/]+)!).to_a
+      else
+        @homepage_uri = gem_info["homepage_uri"]
       end
 
     rescue JSON::ParserError
@@ -38,7 +37,8 @@ class CompareLinker
     private
 
     def redirect_url(url, limit = 5)
-      raise ArgumentError, 'HTTP redirect too deep' if limit <= 0
+      return nil if url.nil?
+      return nil if limit <= 0
 
       uri = URI.parse(url)
       response = Net::HTTP.get_response(uri)
@@ -49,7 +49,7 @@ class CompareLinker
       when Net::HTTPRedirection
         redirect_url(to_absolute(response['location'], uri), limit - 1)
       else
-        raise 'item not found'
+        nil
       end
     end
 
