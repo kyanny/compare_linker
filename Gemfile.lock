@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    compare_linker (1.1.7)
+    compare_linker (1.1.8)
       httpclient
       octokit
 
