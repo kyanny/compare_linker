@@ -27,7 +27,7 @@ class CompareLinker
         _, @repo_owner, @repo_name = github_url.match(%r!github\.com/([^/]+)/([^/]+)!).to_a
       end
 
-    rescue HTTPClient::BadResponseError, JSON::ParserError
+    rescue HTTPClient::BadResponseError
       @homepage_uri = "https://rubygems.org/gems/#{gem_name}"
     end
 
