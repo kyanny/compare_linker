@@ -2,7 +2,7 @@ require "ostruct"
 
 class CompareLinker
   class Formatter
-    class Markdown
+    class Markdown < Base
       def format(gem_info)
         g = OpenStruct.new(gem_info)
 
@@ -19,7 +19,7 @@ class CompareLinker
           "* #{g.gem_name}: (link not found) #{g.old_ver} => #{g.new_ver}"
         end
 
-        if (g.old_tag && g.new_tag && g.new_tag.to_f < g.old_tag.to_f) || g.new_ver.to_f < g.old_ver.to_f
+        if downgrade?(g.old_ver, g.new_ver, g.old_tag, g.new_tag)
           text += " (downgrade)"
         end
 

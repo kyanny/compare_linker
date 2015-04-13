@@ -1,2 +1,4 @@
-.env
-Gemfile.lock
+/.bundle
+/.envrc
+/pkg
+/vendor/bundle

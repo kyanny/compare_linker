@@ -8,7 +8,8 @@ describe CompareLinker::GithubLinkFinder do
 
   describe "#find" do
     before do
-      HTTPClient.stub_chain(:get, :body) { load_fixture("rails.json") }
+      allow(HTTPClient).to receive(:get_content).and_return load_fixture("rails.json")
+      allow(subject).to receive(:redirect_url).and_return "http://github.com/rails/rails"
     end
 
     it "extracts repo_owner and repo_name" do
@@ -19,13 +20,37 @@ describe CompareLinker::GithubLinkFinder do
 
     context "if github url includes trailing slash" do
       before do
-        HTTPClient.stub_chain(:get, :body) { load_fixture("web_translate_it.json") }
+        allow(HTTPClient).to receive(:get_content).and_return load_fixture("web_translate_it.json")
+        allow(subject).to receive(:redirect_url).and_return "http://github.com/atelierconvivialite/webtranslateit/"
       end
 
       it "extracts repo_owner and repo_name without trailing slash" do
         subject.find("web_translate_it")
         expect(subject.repo_owner).to eq "atelierconvivialite"
         expect(subject.repo_name).to eq "webtranslateit"
+      end
+    end
+
+    context "if gem not found on rubygems.org" do
+      before do
+        allow(HTTPClient).to receive(:get_content).and_return load_fixture("not_found.json")
+      end
+
+      it "extracts homepage_uri" do
+        subject.find("not_found")
+        expect(subject.homepage_uri).to eq "https://rubygems.org/gems/not_found"
+      end
+    end
+
+    context "if homepage_uri is '404 not found'" do
+      before do
+        allow(HTTPClient).to receive(:get_content).and_return load_fixture("coffee-script-source.json")
+        allow(subject).to receive(:redirect_url).and_return nil
+      end
+
+      it "extracts homepage_uri" do
+        subject.find("coffee-script-source")
+        expect(subject.homepage_uri).to eq "http://jashkenas.github.com/coffee-script/"
       end
     end
   end

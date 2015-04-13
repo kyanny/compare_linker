@@ -1,4 +1,5 @@
 require "octokit"
+require_relative "compare_linker/formatter/base"
 require_relative "compare_linker/formatter/text"
 require_relative "compare_linker/formatter/markdown"
 require_relative "compare_linker/github_link_finder"
