@@ -6,6 +6,19 @@ Create GitHub's compare view URLs for pull request from diff of `Gemfile.lock` (
 
 [GitHub Compare View](https://github.com/blog/612-introducing-github-compare-view) rocks.But [diff of Gemfile.lock](https://github.com/kyanny/compare_linker_demo/pull/14/files) sucks. So I made Compare Linker.
 
+## Usage
+
+```ruby
+require 'compare_linker'
+
+ENV['OCTOKIT_ACCESS_TOKEN'] = 'xxx'
+
+app = CompareLinker.new('masutaka/compare_linker', '17')
+app.formatter = CompareLinker::Formatter::Markdown.new
+comment = app.make_compare_links.to_a.join("\n")
+app.add_comment('masutaka/compare_linker', '17', comment)
+```
+
 ## Rack app for listening GitHub Webhook
 
 There's rack application for Compare Linker with GitHub's Webhook.
