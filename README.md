@@ -13,10 +13,10 @@ require 'compare_linker'
 
 ENV['OCTOKIT_ACCESS_TOKEN'] = 'xxx'
 
-app = CompareLinker.new('masutaka/compare_linker', '17')
-app.formatter = CompareLinker::Formatter::Markdown.new
-comment = app.make_compare_links.to_a.join("\n")
-app.add_comment('masutaka/compare_linker', '17', comment)
+compare_linker = CompareLinker.new('masutaka/compare_linker', '17')
+compare_linker.formatter = CompareLinker::Formatter::Markdown.new
+comment = compare_linker.make_compare_links.to_a.join("\n")
+compare_linker.add_comment('masutaka/compare_linker', '17', comment)
 ```
 
 ## Rack app for listening GitHub Webhook
