@@ -9,20 +9,27 @@ require_relative "compare_linker/lockfile_fetcher"
 
 class CompareLinker
   attr_reader :repo_full_name, :pr_number, :compare_links
-  attr_accessor :formatter, :octokit
+  attr_accessor :formatter, :octokit, :enterprise_octokit
 
   def initialize(repo_full_name, pr_number)
     @repo_full_name = repo_full_name
     @pr_number = pr_number
     @octokit ||= Octokit::Client.new(access_token: ENV["OCTOKIT_ACCESS_TOKEN"])
+    @enterprise_octokit = 
+      if ENV["ENTERPRISE_OCTOKIT_ACCESS_TOKEN"] && ENV['ENTERPRISE_OCTOKIT_HOST']
+        Octokit::Client.new(access_token: ENV["ENTERPRISE_OCTOKIT_ACCESS_TOKEN"],
+                            api_endpoint: "https://#{ENV['ENTERPRISE_OCTOKIT_HOST']}/api/v3")
+      else
+        nil
+      end
     @formatter = Formatter::Text.new
   end
 
   def make_compare_links
-    if octokit.pull_request_files(repo_full_name, pr_number).find { |resource| resource.filename == "Gemfile.lock" }
-      pull_request = octokit.pull_request(repo_full_name, pr_number)
+    if requested_repository_octokit.pull_request_files(repo_full_name, pr_number).find { |resource| resource.filename == "Gemfile.lock" }
+      pull_request = requested_repository_octokit.pull_request(repo_full_name, pr_number)
 
-      fetcher = LockfileFetcher.new(octokit)
+      fetcher = LockfileFetcher.new(requested_repository_octokit)
       old_lockfile = fetcher.fetch(repo_full_name, pull_request.base.sha)
       new_lockfile = fetcher.fetch(repo_full_name, pull_request.head.sha)
 
@@ -60,11 +67,17 @@ class CompareLinker
   end
 
   def add_comment(repo_full_name, pr_number, compare_links)
-    res = octokit.add_comment(
+    res = requested_repository_octokit.add_comment(
       repo_full_name,
       pr_number,
       compare_links
     )
-    "https://github.com/#{repo_full_name}/pull/#{pr_number}#issuecomment-#{res.id}"
+    res[:html_url]
+  end
+
+  private
+
+  def requested_repository_octokit
+    enterprise_octokit || octokit
   end
 end
